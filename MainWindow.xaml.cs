@@ -39,12 +39,19 @@ namespace WpfApp1
 
         private void Button_Click_Comment(object sender, RoutedEventArgs e)
         {
-            AddCommentDialogWindow myDialog = new AddCommentDialogWindow();
-            ArticleButton.IsEnabled = false;
-            myDialog.vm.SelectedArticle = this.vm.SelectedArticle;
-            myDialog.mainVM = this.vm;
-            myDialog.mainWindowCommentButton = ArticleButton;
-            myDialog.ShowDialog();
+            if (vm.SelectedArticle != null)
+            {
+                AddCommentDialogWindow myDialog = new AddCommentDialogWindow();
+                ArticleButton.IsEnabled = false;
+                myDialog.vm.SelectedArticle = this.vm.SelectedArticle;
+                myDialog.mainVM = this.vm;
+                myDialog.mainWindowCommentButton = ArticleButton;
+                myDialog.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Wybierz artykuł");
+            }
         }
     }
 }
