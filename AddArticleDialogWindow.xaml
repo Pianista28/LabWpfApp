@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:ViewModel="clr-namespace:WpfApp1.ViewModel"
         mc:Ignorable="d"
-        Title="AddArticleDialogWindow" Height="300" Width="300">
+        Title="AddArticleDialogWindow" Height="300" Width="300" Name="ThisWindow">
     <Window.DataContext>
         <ViewModel:ApplicationViewModel/>
     </Window.DataContext>
@@ -23,7 +23,7 @@
         <TextBox Margin ="10"  Grid.Row="1" Text="{Binding NewArticleText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="AnulujA" Width="120" Margin="10" Click="Button_Click_Anuluj">Anuluj</Button>
-            <Button Name="DodajA" Width="120" Margin="10" Command="{Binding AddArticleCommand}" >Dodaj</Button>
+            <Button Name="DodajA" Width="120" Margin="10" Command="{Binding AddArticleCommand}" CommandParameter="{Binding ElementName=ThisWindow}" >Dodaj</Button>
         </StackPanel>
     </Grid>
 </Window>

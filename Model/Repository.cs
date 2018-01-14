@@ -37,7 +37,7 @@ namespace WpfApp1.Model
 
         public ICollection<Comment> GetCommentsForArticle(Article article)
         {
-            return context.Comments.Where(comment => comment.IdArticle == article.Id).ToList();
+            return article == null ? new List<Comment>() :  context.Comments.Where(comment => comment.IdArticle == article.Id).ToList();
         }
 
         public void InsertArticle(Article article)
@@ -48,8 +48,6 @@ namespace WpfApp1.Model
 
         public void InsertComment(Comment comment)
         {
-            //var article = context.Articles.Where(a => a.Id == comment.IdArticle).SingleOrDefault();
-            //article?.Comments.Add(comment);
             context.Comments.Add(comment);
             Save();
         }

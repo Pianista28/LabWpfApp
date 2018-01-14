@@ -22,6 +22,7 @@ namespace WpfApp1
     {
         public Button mainWindowCommentButton;
         public ApplicationViewModel vm;
+        public ApplicationViewModel mainVM;
         public AddCommentDialogWindow()
         {
             InitializeComponent();
@@ -37,7 +38,8 @@ namespace WpfApp1
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             mainWindowCommentButton.IsEnabled = true;
-
+            mainVM.SelectedArticle = vm.SelectedArticle;
+            mainVM.Load();
             base.OnClosing(e);
         }
     }

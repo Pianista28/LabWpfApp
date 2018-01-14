@@ -25,9 +25,7 @@
             <Button Name="ArticleButton" Margin="0,0,10,0" Click="Button_Click_Article">Dodaj Artykuł</Button>
             <Button Name="CommentButton" Margin="10,0,0,0" Click="Button_Click_Comment">Dodaj Komentarz</Button>
         </StackPanel>
-        <TextBlock Grid.Row="1" Text="{Binding SelectedArticle.Content}"></TextBlock>
-        <ListView Name ="CommentList" ItemsSource="{Binding Path=Comments, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Content" Grid.Row="1" Grid.Column="1">
-        </ListView>
-
+        <TextBlock Grid.Row="1" Text="{Binding SelectedArticle.Content}" TextWrapping="Wrap"></TextBlock>
+        <ListView Name ="CommentList" ItemsSource="{Binding Path=Comments, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" DisplayMemberPath="Content" Grid.Row="1" Grid.Column="1" HorizontalContentAlignment="Stretch"  ScrollViewer.HorizontalScrollBarVisibility="Visible"></ListView>
     </Grid>
 </Window>

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:WpfApp1"
         xmlns:ViewModel="clr-namespace:WpfApp1.ViewModel"
         mc:Ignorable="d"
-        Title="AddCommentDialogWindow" Height="300" Width="300">
+        Title="AddCommentDialogWindow" Height="300" Width="300" Name="ThisWindowC">
     <Window.DataContext>
         <ViewModel:ApplicationViewModel/>
     </Window.DataContext>
@@ -16,10 +16,10 @@
             <RowDefinition Height="auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <TextBox Margin="10" Text="{Binding NewCommentText}"></TextBox>
+        <TextBox Margin="10" Text="{Binding NewCommentText, UpdateSourceTrigger=PropertyChanged}"></TextBox>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="Anuluj" Width="120" Margin="10" Click="Button_Click_Anuluj">Anuluj</Button>
-            <Button Name="Dodaj" Width="120" Margin="10" Command="{Binding AddCommentCommand}">DODAJ</Button>
+            <Button Name="Dodaj" Width="120" Margin="10" Command="{Binding AddCommentCommand}" CommandParameter="{Binding ElementName=ThisWindowC}">DODAJ</Button>
         </StackPanel>
     </Grid>
 </Window>

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WpfApp1.ViewModel;
 
 namespace WpfApp1
 {
@@ -20,9 +21,13 @@ namespace WpfApp1
     public partial class AddArticleDialogWindow : Window
     {
         public Button mainWindowArticleButton;
+        public ApplicationViewModel mainVM;
+        public ApplicationViewModel vm;
+
         public AddArticleDialogWindow()
         {
             InitializeComponent();
+            vm = this.DataContext as ApplicationViewModel;
         }
 
         private void Button_Click_Anuluj(object sender, RoutedEventArgs e)
@@ -33,7 +38,8 @@ namespace WpfApp1
         protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
         {
             mainWindowArticleButton.IsEnabled = true;
-
+            mainVM.SelectedArticle = vm.SelectedArticle;
+            mainVM.Load();
             base.OnClosing(e);
         }
     }

@@ -17,45 +17,47 @@ namespace WpfApp1.ViewModel
         public ApplicationViewModel()
         {
             Load();
-            AddArticleCommand = new DelegateCommand(AddArticleCommandExecute, AddArticleCommandCanExecute);
-            AddCommentCommand = new DelegateCommand(AddCommendCommandExecute, AddCommentCommandCanExecute);
+            AddArticleCommand = new DelegateCommand<Window>(AddArticleCommandExecute, AddArticleCommandCanExecute);
+            AddCommentCommand = new DelegateCommand<Window>(AddCommendCommandExecute, AddCommentCommandCanExecute);
         }
 
-        public DelegateCommand AddArticleCommand { get; set; }
+        public DelegateCommand<Window> AddArticleCommand { get; set; }
 
-        private void AddArticleCommandExecute()
+        private void AddArticleCommandExecute(Window window)
         {
             using (var netContext = new NetContext())
             {
                 Repository repository = new Repository(netContext);
                 repository.InsertArticle(new Article() { Title = NewArticleTitle, Content = NewArticleText });
             }
+            window.Close();
             Load();
-            MessageBox.Show("Hello");
         }
 
-        private bool AddArticleCommandCanExecute()
+        private bool AddArticleCommandCanExecute(Window window)
         {
-            return true;//!String.IsNullOrWhiteSpace(NewArticleText) && !String.IsNullOrWhiteSpace(NewArticleTitle);
+            if(!String.IsNullOrWhiteSpace(NewArticleText) && !String.IsNullOrWhiteSpace(NewArticleTitle))
+                return NewArticleTitle.Length >= 3;
+            return false;
         }
 
 
-        public DelegateCommand AddCommentCommand { get; set; }
+        public DelegateCommand<Window> AddCommentCommand { get; set; }
 
-        private void AddCommendCommandExecute()
+        private void AddCommendCommandExecute(Window window)
         {
             using (var netContext = new NetContext())
             {
                 Repository repository = new Repository(netContext);
-                repository.InsertComment(new Comment() { Content = NewCommentText, IdArticle = AddCommentFor.Id});
+                repository.InsertComment(new Comment() { Content = NewCommentText, IdArticle = SelectedArticle.Id});
             }
+            window.Close();
             Load();
-            MessageBox.Show("Hello");
         }
 
-        private bool AddCommentCommandCanExecute()
+        private bool AddCommentCommandCanExecute(Window window)
         {
-            return true;//!String.IsNullOrWhiteSpace(NewArticleText) && !String.IsNullOrWhiteSpace(NewArticleTitle);
+            return !String.IsNullOrWhiteSpace(NewCommentText);
         }
 
         private ICollection<Comment> comments;
@@ -93,21 +95,33 @@ namespace WpfApp1.ViewModel
         public string NewCommentText
         {
             get { return newCommentText; }
-            set { SetProperty(ref newCommentText, value); }
+            set
+            {
+                SetProperty(ref newCommentText, value);
+                AddCommentCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private string newArticleText;
         public string NewArticleText
         {
             get { return newArticleText; }
-            set { SetProperty(ref newArticleText, value); }
+            set
+            {
+                SetProperty(ref newArticleText, value);
+                AddArticleCommand.RaiseCanExecuteChanged();
+            }
         }
 
         private string newArticleTitle;
         public string NewArticleTitle
         {
             get { return newArticleTitle; }
-            set { SetProperty(ref newArticleTitle, value); }
+            set
+            {
+                SetProperty(ref newArticleTitle, value);
+                AddArticleCommand.RaiseCanExecuteChanged();
+            }
         }
 
         public Article AddCommentFor { get; set; }
@@ -119,7 +133,6 @@ namespace WpfApp1.ViewModel
             set
             {
                 SetProperty(ref selectedArticle, value);
-                AddCommentFor = selectedArticle;
                 using (var netContext = new NetContext())
                 {
                     Repository repository = new Repository(netContext);
@@ -133,7 +146,13 @@ namespace WpfApp1.ViewModel
             using (var netContext = new NetContext())
             {
                 Repository repository = new Repository(netContext);
+                int selectedId = -1;
+                if (selectedArticle != null)
+                    selectedId = SelectedArticle.Id;
                 Articles = repository.GetAllArticles();
+                SelectedArticle = Articles.FirstOrDefault(x => x.Id == selectedId);
+                if (selectedArticle != null)
+                    Comments = repository.GetCommentsForArticle(selectedArticle);
             }
         }
 

@@ -31,6 +31,8 @@ namespace WpfApp1
         {
             AddArticleDialogWindow myDialog = new AddArticleDialogWindow();
             CommentButton.IsEnabled = false;
+            myDialog.mainVM = this.vm;
+            myDialog.vm.SelectedArticle = this.vm.SelectedArticle;
             myDialog.mainWindowArticleButton = CommentButton;
             myDialog.ShowDialog();
         }
@@ -39,7 +41,8 @@ namespace WpfApp1
         {
             AddCommentDialogWindow myDialog = new AddCommentDialogWindow();
             ArticleButton.IsEnabled = false;
-            myDialog.vm.AddCommentFor = this.vm.AddCommentFor;
+            myDialog.vm.SelectedArticle = this.vm.SelectedArticle;
+            myDialog.mainVM = this.vm;
             myDialog.mainWindowCommentButton = ArticleButton;
             myDialog.ShowDialog();
         }
